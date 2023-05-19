@@ -1,0 +1,36 @@
+
+# Installation:
+# cp -vf ./composectl@.service /etc/systemd/system/
+# systemctl daemon-reload
+# systemctl enable composectl@BOT
+
+[Unit]
+# https://www.freedesktop.org/software/systemd/man/systemd.unit.html
+# TODO: %i may not work in centos
+Description=Composectl %i Service
+Documentation=man:podman-generate-systemd(1)
+#Wants=network-online.target
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+# https://www.freedesktop.org/software/systemd/man/systemd.service.html
+#User=botuser
+Restart=always
+RestartSec=30
+TimeoutSec=0
+TimeoutStopSec=70
+#WatchdogSec=120
+WorkingDirectory=/opt/telegram_bots
+Environment="BOT=%i"
+ExecStop=/opt/telegram_bots/composectl stop
+ExecStart=/opt/telegram_bots/composectl start
+#ExecStartPost=sh -c "(while sleep 20s; do ./composectl status && /usr/bin/systemd-notify WATCHDOG=1; done) &"
+
+# https://www.freedesktop.org/software/systemd/man/systemd.kill.html
+KillMode=control-group
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=default.target

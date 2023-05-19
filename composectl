@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+trap 'echo Error code ${?} at line ${LINENO}: "$BASH_COMMAND"' ERR
+
+[ ! -z "${BOT}" ]           # exit if no bot selected.
+cd "$(dirname ${0})/${BOT}" # enter workdir named as BOT
+
+alias stop='podman-compose down'
+alias start='exec podman-compose --podman-run-args="--sdnotify=conmon" up'
+alias status='
+ readonly CONTAINERS=$(podman container list --format "{{.Names}}" --filter "name=${BOT}_");
+ [ ! -z "${CONTAINERS}" ];
+ for c in ${CONTAINERS}; do podman healthcheck run "${c}"; done;
+'
+
+case "${1}" in
+ # NB! call start *after* all commands, becuase of using exec call in start
+ 'restart' ) stop && sleep 5s && start;;
+ 'start'   ) stop && sleep 5s && start;;
+ 'stop'    ) stop;;
+ 'status'  ) status;;
+ *         ) echo 'USAGE: ${0} [ start | stop | status | restart ]' >&2;;
+esac
