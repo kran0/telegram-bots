@@ -1,0 +1,41 @@
+services:
+
+  rssbot:
+    image: ghcr.io/tarampampam/rssbot:latest # TODO: make own build
+    volumes: ./data:/data:rw
+    command: [ "--database", "/data/rssbot.json",
+               "--admin", "${ADMIN_UID_1}",
+               "--admin", "${ADMIN_UID_2}",
+               "${TOKEN}" ]
+#    healthcheck:
+#      test: [ "CMD", "/bin/rssbot", "--version" ]
+#      interval: 10s
+#      retries: 10
+#      start_period: 30s
+#      timeout: 10s
+    depends_on: [ "backup" ]
+
+#  feed.eugenemolotov.ru:
+#    image: docker.io/rssbridge/rss-bridge:latest
+#    healthcheck:
+#      test: [ "CMD", "curl", "--head" ]
+#      interval: 60s
+#      retries: 10
+#      start_period: 30s
+#      timeout: 10s
+
+  backup:
+    image: docker.io/library/busybox:latest
+    restart: "no"
+    volumes:
+     - ./data:/data:ro
+     - ./backup:/backup:rw
+    command: [ "sh", "-c",
+               'cat /data/rssbot.json | tee /backup/rssbot.json | gzip > /backup/$(date +%s)rssbot.json.gz && exec sleep infinite' ]
+    user: "1000:1000"
+    healthcheck:
+      test: [ "CMD", "cmp", "-s", "/data/rssbot.json", "/backup/rssbot.json" ]
+      interval: 168h # 24*7 hours
+      retries:  10   #
+      start_period: 30s
+      timeout: 10s
