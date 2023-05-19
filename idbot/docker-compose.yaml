@@ -1,0 +1,8 @@
+services:
+
+  idbot:
+    image: docker.io/bennythink/idbot:latest
+    environment:
+      TOKEN:    "${TOKEN}"
+      APP_ID:   "${APP_ID}"   # Get it from https://core.telegram.org/
+      APP_HASH: "${APP_HASH}"
