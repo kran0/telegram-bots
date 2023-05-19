@@ -21,10 +21,10 @@ RestartSec=30
 TimeoutSec=0
 TimeoutStopSec=70
 #WatchdogSec=120
-WorkingDirectory=/opt/telegram_bots
+WorkingDirectory=/opt/telegram-bots
 Environment="BOT=%i"
-ExecStop=/opt/telegram_bots/composectl stop
-ExecStart=/opt/telegram_bots/composectl start
+ExecStop=/opt/telegram-bots/composectl stop
+ExecStart=/opt/telegram-bots/composectl start
 #ExecStartPost=sh -c "(while sleep 20s; do ./composectl status && /usr/bin/systemd-notify WATCHDOG=1; done) &"
 
 # https://www.freedesktop.org/software/systemd/man/systemd.kill.html
