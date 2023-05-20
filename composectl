@@ -6,7 +6,7 @@ trap 'echo Error code ${?} at line ${LINENO}: "$BASH_COMMAND"' ERR
 cd "$(dirname ${0})/${BOT}" # enter workdir named as BOT
 
 alias stop='podman-compose down'
-alias start='exec podman-compose --podman-run-args="--sdnotify=conmon" up'
+alias start='exec podman-compose --podman-run-args="--sdnotify=conmon" up --force-recreate'
 alias status='
  readonly CONTAINERS=$(podman container list --format "{{.Names}}" --filter "name=${BOT}_");
  [ ! -z "${CONTAINERS}" ];
@@ -16,7 +16,7 @@ alias status='
 case "${1}" in
  # NB! call start *after* all commands, becuase of using exec call in start
  'restart' ) stop && sleep 5s && start;;
- 'start'   ) stop && sleep 5s && start;;
+ 'start'   ) start;;
  'stop'    ) stop;;
  'status'  ) status;;
  *         ) echo 'USAGE: ${0} [ start | stop | status | restart ]' >&2;;
