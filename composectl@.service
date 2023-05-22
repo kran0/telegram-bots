@@ -25,6 +25,7 @@ WorkingDirectory=/opt/telegram-bots
 Environment="BOT=%i"
 ExecStop=/opt/telegram-bots/composectl stop
 ExecStart=/opt/telegram-bots/composectl start
+# You may need ExecStartPost for docker-compose or if sdnotify is not working with podman+systemd (wrong version)
 #ExecStartPost=sh -c "(while sleep 20s; do ./composectl status && /usr/bin/systemd-notify WATCHDOG=1; done) &"
 
 # https://www.freedesktop.org/software/systemd/man/systemd.kill.html
