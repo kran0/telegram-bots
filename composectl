@@ -8,9 +8,9 @@ cd "$(dirname ${0})/${BOT}" # enter workdir named as BOT
 alias stop='podman-compose down'
 alias start='exec podman-compose --podman-run-args="--sdnotify=conmon" up --force-recreate'
 # Status is mostly useless. Watch ExecStartPost in composectl@.service.
-# It is buggy because of using podman (not podman-compose) to list containers.
 alias status='
- readonly CONTAINERS=$(podman container list --format "{{.Names}}" --filter "name=${BOT}_");
+# readonly CONTAINERS=$(podman container list --format "{{.Names}}" --filter label="io.podman.compose.project=${BOT}");
+ readonly CONTAINERS=$(podman-compose ps --quiet);
  [ ! -z "${CONTAINERS}" ];
  for c in ${CONTAINERS}; do podman healthcheck run "${c}"; done;
 '
