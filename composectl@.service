@@ -1,4 +1,3 @@
-
 # Installation:
 # cp -vf ./composectl@.service /etc/systemd/system/
 # systemctl daemon-reload
@@ -6,8 +5,7 @@
 
 [Unit]
 # https://www.freedesktop.org/software/systemd/man/systemd.unit.html
-# TODO: %i may not work in centos
-Description=Composectl %i Service
+Description=%N Service
 Documentation=man:podman-generate-systemd(1)
 #Wants=network-online.target
 Requires=network-online.target
