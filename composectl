@@ -1,15 +1,14 @@
 #!/bin/sh -e
 
-trap 'echo Error code ${?} at line ${LINENO}: "$BASH_COMMAND"' ERR
+trap 'echo Error code ${?} at line ${LINENO}: "${BASH_COMMAND:-BASH_COMMAND is empty}"' ERR
 
-[ ! -z "${BOT}" ]           # exit if no bot selected.
+[ ! -z "${BOT}" ]           # exit if no bot selected
 cd "$(dirname ${0})/${BOT}" # enter workdir named as BOT
 
 alias stop='podman-compose down'
 alias start='exec podman-compose --podman-run-args="--sdnotify=conmon" up --force-recreate'
 # Status is mostly useless. Watch ExecStartPost in composectl@.service.
 alias status='
-# readonly CONTAINERS=$(podman container list --format "{{.Names}}" --filter label="io.podman.compose.project=${BOT}");
  readonly CONTAINERS=$(podman-compose ps --quiet);
  [ ! -z "${CONTAINERS}" ];
  for c in ${CONTAINERS}; do podman healthcheck run "${c}"; done;

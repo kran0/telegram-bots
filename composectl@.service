@@ -6,7 +6,7 @@
 [Unit]
 # https://www.freedesktop.org/software/systemd/man/systemd.unit.html
 Description=%N Service
-Documentation=man:podman-generate-systemd(1)
+Documentation=github.com/kran0/telegram-bots
 #Wants=network-online.target
 Requires=network-online.target
 After=network-online.target
