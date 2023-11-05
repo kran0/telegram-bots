@@ -1,0 +1,16 @@
+iservices:
+
+    caldav-reminder-telegram-bot:
+      image: docker.io/mcdax/caldav-reminder-telegram-bot:latest
+      environment:
+        CALDAV_URL: "${CALDAV_URL}"
+        CALDAV_USERNAME: "${CALDAV_USERNAME}"
+        CALDAV_PASSWORD: "${CALDAV_PASSWORD}"
+        CALENDAR_IDS: "${CALENDAR_IDS}"
+        SYNC_INTERVAL_IN_SEC: "${SYNC_INTERVAL_IN_SEC:-86400}"
+        FETCH_EVENT_WINDOW_IN_DAYS: "${FETCH_EVENT_WINDOW_IN_DAYS:-7}"
+        TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN}"
+        TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID}"
+        TIMEZONE: "${TIMEZONE:-Europe/Moscow}"
+      restart: unless-stopped  # Restart policy
+
