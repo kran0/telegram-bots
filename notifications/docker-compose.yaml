@@ -1,4 +1,4 @@
-iservices:
+services:
 
     caldav-reminder-telegram-bot: &caldav-anchor
       image: docker.io/mcdax/caldav-reminder-telegram-bot:latest
