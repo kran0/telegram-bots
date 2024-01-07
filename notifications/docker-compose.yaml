@@ -1,6 +1,6 @@
 iservices:
 
-    caldav-reminder-telegram-bot:
+    caldav-reminder-telegram-bot: &caldav-anchor
       image: docker.io/mcdax/caldav-reminder-telegram-bot:latest
       environment: # documentation: https://github.com/mcdax/caldav-reminder-telegram-bot
         CALDAV_URL: "${CALDAV_URL}"
